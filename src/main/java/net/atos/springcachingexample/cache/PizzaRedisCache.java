@@ -19,6 +19,7 @@ public class PizzaRedisCache {
 
     public Optional<Pizza> get(String key) {
         try {
+            log.info("Czytam z redis{}", key);
             return Optional.ofNullable(this.cache.get(key));
         } catch (Exception e) {
             log.error("Error get from redis", e);
@@ -28,7 +29,7 @@ public class PizzaRedisCache {
 
     public void put (String key, Pizza pizza){
         try {
-            this.cache.set(key, pizza, 2, TimeUnit.MINUTES);
+            this.cache.set(key, pizza, 10, TimeUnit.MINUTES);
         }catch (Exception e){
             log.error("Error pot value to redis", e);
         }

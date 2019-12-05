@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @AllArgsConstructor
-@RequestMapping(value = "/pizza/redis/")
+@RequestMapping(value = "/pizza/redis")
 public class PizzaRedisController {
 
     private PizzaRedisService service;
