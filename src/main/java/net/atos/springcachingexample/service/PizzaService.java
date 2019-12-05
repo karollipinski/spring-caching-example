@@ -2,7 +2,10 @@ package net.atos.springcachingexample.service;
 
 import lombok.extern.slf4j.Slf4j;
 import net.atos.springcachingexample.model.Pizza;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import javax.annotation.PostConstruct;
 import java.util.Arrays;
@@ -61,7 +64,30 @@ public class PizzaService {
         pizza.setCurrency("PLN");
 
         PIZZA.put(pizza.getName(), pizza);
+    }
 
+    @Cacheable(value = "pizzas", key = "#name")
+    public Pizza findPizza(String name) {
+        Assert.notNull(name, "The Pizza'a name must bot be null");
+
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        log.info("Get pizza name : {}", name);
+        return PIZZA.get(name);
+    }
+
+    @CacheEvict(value = "pizzas", key = "#pizza.name")
+    public void cacheevict(Pizza pizza) {
+        log.info("CacheEvict pizza {}", pizza);
+    }
+
+    @CacheEvict(value = "pizzas", allEntries = true)
+    public void cacheevictAll() {
+        log.info("CacheEvict allEntries pizza ");
     }
 
 }
